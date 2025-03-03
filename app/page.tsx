@@ -1,23 +1,62 @@
+"use client";
+
+import { useSearchParams, useRouter } from "next/navigation";
+import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
 import Sidebar from "@/components/SideBar";
 import { products } from "@/lib/products";
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  // Extract filter & sorting parameters from the URL
+  const selectedCategory = searchParams.get("category") || "";
+  const selectedBrand = searchParams.get("brand") || "";
+  const selectedSizeGroup = searchParams.get("size") || "";
+  const sortingMethod = searchParams.get("sort") || "";
+
+  // Filter products based on selections
+  let filteredProducts = products.filter((product) => {
+    return (
+      (selectedCategory ? product.category === selectedCategory : true) &&
+      (selectedBrand ? product.brand === selectedBrand : true) &&
+      (selectedSizeGroup ? product.screenSizeGroup === selectedSizeGroup : true)
+    );
+  });
+
+  // Apply sorting
+  if (sortingMethod === "low-to-high") {
+    filteredProducts = filteredProducts.sort((a, b) => a.price - b.price);
+  } else if (sortingMethod === "high-to-low") {
+    filteredProducts = filteredProducts.sort((a, b) => b.price - a.price);
+  }
+
+  // Function to update filters in the URL
+  const updateFilters = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    router.push(`/?${params.toString()}`);
+  };
+
   return (
     <main className="flex min-h-screen bg-black text-white">
-      {/* Left Sidebar (Filters) */}
-      <Sidebar />
+      {/* Sidebar (Filters + Sorting) */}
+      <Sidebar onFilterChange={updateFilters} onSortChange={(sort) => updateFilters("sort", sort)} />
 
       {/* Product Listing */}
       <div className="flex-1 p-6">
-        <h1 className="text-3xl font-bold mb-6">Showing {products.length} results</h1>
+        <h1 className="text-3xl font-bold mb-6">Showing {filteredProducts.length} results</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </div>
-
     </main>
   );
 }

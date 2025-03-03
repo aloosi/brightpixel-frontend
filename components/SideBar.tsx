@@ -1,7 +1,11 @@
-import Link from "next/link"
 import { categories, screenSizes, brands, sortingOptions } from "@/lib/filters";
 
-export default function Sidebar() {
+export default function Sidebar({
+    onFilterChange, onSortChange
+}: {
+    onFilterChange: (key: string, value: string) => void;
+    onSortChange: (sort: string) => void}) {
+    
     return (
         <aside className="w-1/5 p-6 border-r border-gray-700">
             <div>
@@ -9,7 +13,7 @@ export default function Sidebar() {
                 <ul className="mb-4">
                     {categories.map((category) => (
                         <li key={category} className="text-gray-400 hover:text-white cursor-pointer">
-                            <Link href={`/?category=${category}`}>{category}</Link>
+                            <button onClick={() => onFilterChange("category", category)}>{category}</button>
                         </li>
                     ))}
                 </ul>
@@ -20,7 +24,7 @@ export default function Sidebar() {
                 <ul className="mb-4">
                     {screenSizes.map((screenSize) => (
                         <li key={screenSize} className="text-gray-400 hover:text-white cursor-pointer">
-                            <Link href={`/?screenSize=${screenSize}`}>{screenSize}</Link>
+                            <button onClick={() => onFilterChange("size", screenSize)}>{screenSize}</button>
                         </li>
                     ))}
                 </ul>
@@ -31,7 +35,7 @@ export default function Sidebar() {
                 <ul className="mb-4">
                     {brands.map((brand) => (
                         <li key={brand} className="text-gray-400 hover:text-white cursor-pointer">
-                            <Link href={`/?brand=${brand}`}>{brand}</Link>
+                            <button onClick={() => onFilterChange("brand", brand)}>{brand}</button>
                         </li>
                     ))}
                 </ul>
@@ -42,7 +46,7 @@ export default function Sidebar() {
                     <ul>
                         {sortingOptions.map((option) => (
                             <li key={option.value} className="text-gray-400 hover:white cursor-pointer">
-                                {option.label}
+                                <button onClick={() => onSortChange(option.value)}>{option.label}</button>
                             </li>
                         ))}
                     </ul>

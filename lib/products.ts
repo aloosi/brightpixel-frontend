@@ -18,7 +18,7 @@ export const products: Product[] = [
     description: "Apple Studio 5k Display",
     price: 1199.99,
     imageUrl: "/images/applestudiodisplay.jpg",
-    category: "Apple",
+    category: "Apple Monitors",
     screenSize: 27,
     screenSizeGroup: "25 - 29 Inch",
     brand: "Apple",
