@@ -1,9 +1,10 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductCard from "@/components/ProductCard";
 import Sidebar from "@/components/SideBar";
+import Navbar from "@/components/Navbar";
 import { products } from "@/lib/products";
 
 export default function Home() {
@@ -15,13 +16,31 @@ export default function Home() {
   const selectedBrand = searchParams.get("brand") || "";
   const selectedSizeGroup = searchParams.get("size") || "";
   const sortingMethod = searchParams.get("sort") || "";
+  const searchQuery = searchParams.get("search") || "";
 
-  // Filter products based on selections
+  // State for search input
+  const [searchInput, setSearchInput] = useState(searchQuery);
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (searchInput) {
+      params.set("search", searchInput);
+    } else {
+      params.delete("search");
+    }
+    router.push(`/?${params.toString()}`);
+  }, [searchInput]);
+
+  // Filter products based on selections and search query
   let filteredProducts = products.filter((product) => {
     return (
       (selectedCategory ? product.category === selectedCategory : true) &&
       (selectedBrand ? product.brand === selectedBrand : true) &&
-      (selectedSizeGroup ? product.screenSizeGroup === selectedSizeGroup : true)
+      (selectedSizeGroup ? product.screenSizeGroup === selectedSizeGroup : true) &&
+      (searchQuery
+        ? product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          product.description.toLowerCase().includes(searchQuery.toLowerCase())
+        : true)
     );
   });
 
@@ -44,19 +63,22 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen bg-black text-white">
-      {/* Sidebar (Filters + Sorting) */}
-      <Sidebar onFilterChange={updateFilters} onSortChange={(sort) => updateFilters("sort", sort)} />
+    <div className="min-h-screen bg-black text-white">
+      <Navbar searchInput={searchInput} setSearchInput={setSearchInput} />
+      <main className="flex min-h-screen bg-black text-white">
+        {/* Sidebar (Filters + Sorting) */}
+        <Sidebar onFilterChange={updateFilters} onSortChange={(sort) => updateFilters("sort", sort)} />
 
-      {/* Product Listing */}
-      <div className="flex-1 p-6">
-        <h1 className="text-3xl font-bold mb-6">Showing {filteredProducts.length} results</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+        {/* Product Listing */}
+        <div className="flex-1 p-6">
+          <h1 className="text-3xl font-bold mb-6">Showing {filteredProducts.length} results</h1>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filteredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }
