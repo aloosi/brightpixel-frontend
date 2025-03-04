@@ -1,12 +1,14 @@
-// components/ProductCard.tsx
+"use client";
+
 import Image from "next/image";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/lib/products";
-
-
+import { useCart } from "@/components/cart/CartContext"; 
 
 export default function ProductCard({ product }: { product: Product }) {
+  const { addToCart } = useCart(); // Access addToCart function
+
   return (
     <Card className="w-full p-4 shadow-lg">
       <CardHeader>
@@ -24,10 +26,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <p className="text-md font-semibold mt-2">${product.price.toFixed(2)}</p>
       </CardContent>
       <CardFooter>
-        
-        
-        <Button className="w-full">Add to Cart</Button>
-        
+        <Button className="w-full" onClick={() => addToCart(product)}>Add to Cart</Button>
       </CardFooter>
     </Card>
   );

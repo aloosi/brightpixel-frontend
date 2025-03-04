@@ -45,4 +45,15 @@ export const products: Product[] = [
         screenSizeGroup: "30 - 34 Inch",
         brand: "LG",
       },
+      {
+        id: "4",
+        name: "Samsung Curved 32\" Monitor",
+        description: "Samsung Curved Monitor",
+        price: 239.99,
+        imageUrl: "/images/samsung-curved-32.jpg",
+        category: "Curved Monitors",
+        screenSize: 32,
+        screenSizeGroup: "30 - 34 Inch",
+        brand: "Samsung",
+      },
 ];
