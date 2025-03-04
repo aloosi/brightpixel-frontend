@@ -6,17 +6,19 @@ import { useState } from "react";
 import { Search, ShoppingCart, User } from "lucide-react";
 import { useCart } from "@/components/cart/CartContext";
 import CartSidebar from "@/components/cart/CartSidebar";
-import AboutUs from "@/components/AboutUs"; // ✅ Re-added About Us modal
+import AboutUs from "@/components/AboutUs"; // ✅ About Us modal
+import AuthModal from "@/components/auth/AuthModal"; // ✅ New Authentication modal
 
 export default function Navbar({ searchInput = "", setSearchInput }: { searchInput?: string; setSearchInput?: (value: string) => void }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isAboutOpen, setIsAboutOpen] = useState(false); // ✅ Added state for About Us
-  const { cart } = useCart(); // ✅ Access cart state to show count
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false); // ✅ New state for authentication modal
+  const { cart } = useCart();
 
   return (
     <>
       <nav className="bg-black text-white flex items-center justify-between px-6 py-4 fixed top-0 left-0 w-full z-50 border-b border-gray-700">
-        {/* Left Side - Logo and Links */}
+        {/* Left Side - Logo and About Us */}
         <div className="flex items-center space-x-6">
           <Link href="/" className="text-xl font-bold">
             <Image src="/logo.svg" alt="Logo" width={32} height={32} className="h-8 w-auto" />
@@ -50,12 +52,18 @@ export default function Navbar({ searchInput = "", setSearchInput }: { searchInp
             )}
           </button>
 
-          <User size={24} className="hover:text-gray-400 transition cursor-pointer" />
+          {/* ✅ User Icon for Login/Signup */}
+          <button onClick={() => setIsAuthOpen(true)} className="hover:text-gray-400 transition">
+            <User size={24} />
+          </button>
         </div>
       </nav>
 
       {/* ✅ About Us Modal */}
       <AboutUs isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+
+      {/* ✅ Authentication Modal (Login/Signup) */}
+      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
 
       {/* ✅ Cart Sidebar */}
       <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
