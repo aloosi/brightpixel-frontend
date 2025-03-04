@@ -47,7 +47,7 @@ export const products: Product[] = [
       },
       {
         id: "4",
-        name: "Samsung Curved 32\" Monitor",
+        name: "Samsung Curved 32\"",
         description: "Samsung Curved Monitor",
         price: 239.99,
         imageUrl: "/images/samsung-curved-32.jpg",

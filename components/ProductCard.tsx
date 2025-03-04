@@ -25,6 +25,8 @@ export default function ProductCard({ product }: { product: Product }) {
         <p className="text-sm text-gray-600">{product.description}</p>
         <p className="text-md font-semibold mt-2">${product.price.toFixed(2)}</p>
       </CardContent>
+      
+      
       <CardFooter>
         <Button className="w-full" onClick={() => addToCart(product)}>Add to Cart</Button>
       </CardFooter>

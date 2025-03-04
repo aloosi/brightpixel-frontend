@@ -3,6 +3,7 @@
 import { useCart } from "@/components/cart/CartContext";
 import { X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
@@ -74,7 +75,7 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
 
           {/* Buttons */}
           <button className="mt-4 w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg font-semibold text-white">
-            Proceed to Checkout
+            <Link href="/checkout"> Proceed to Checkout </Link>
           </button>
           <button onClick={clearCart} className="mt-2 w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-white">
             Clear Cart
