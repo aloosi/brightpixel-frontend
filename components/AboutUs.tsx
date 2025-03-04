@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
+import { X } from "lucide-react";
 
 const teamMembers = [
   {
@@ -32,26 +33,47 @@ export default function AboutUs({ isOpen, onClose }: { isOpen: boolean; onClose:
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm">
-      <div className="bg-black text-white p-6 rounded-xl shadow-lg w-11/12 max-w-2xl border-2 border-gray-400">
-        <h2 className="text-3xl font-bold text-center mb-4 text-gray-200">About Us</h2>
-        <p className="text-gray-400 text-center mb-6">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-lg z-50">
+      <div className="bg-black text-white p-6 rounded-xl shadow-lg w-11/12 max-w-2xl border border-gray-700">
+        {/* Header with Close Button */}
+        <div className="flex justify-between items-center border-b border-gray-700 pb-4">
+          <h2 className="text-2xl font-bold text-gray-200">About Us</h2>
+          <button onClick={onClose} className="hover:text-gray-400 transition">
+            <X size={24} />
+          </button>
+        </div>
+
+        {/* Description */}
+        <p className="text-gray-400 text-center mt-4">
           We are a passionate team dedicated to delivering high-quality monitors to customers worldwide.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Team Members Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           {teamMembers.map((member) => (
-            <div key={member.name} className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-md">
-              <Image src={member.imageUrl} alt={member.name} width={64} height={64} className="rounded-full object-cover border-2 border-gray-500" />
-              <div >
-                <h3 className="font-semibold text-lg text-black">{member.name}</h3>
-                <p className="text-sm text-gray-900">{member.role}</p>
+            <div key={member.name} className="flex items-center space-x-4 bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700">
+              <Image
+                src={member.imageUrl}
+                alt={member.name}
+                width={64}
+                height={64}
+                className="rounded-full object-cover border-2 border-gray-600"
+              />
+              <div>
+                <h3 className="font-semibold text-lg text-white">{member.name}</h3>
+                <p className="text-sm text-gray-400">{member.role}</p>
+                <p className="text-xs text-gray-500">{member.email}</p>
+                <p className="text-xs text-gray-400 mt-2">{member.bio}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <button onClick={onClose} className="mt-6 w-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold px-4 py-2 rounded-lg">
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="mt-6 w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200 border border-gray-600"
+        >
           Close
         </button>
       </div>
